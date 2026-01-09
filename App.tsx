@@ -6,6 +6,9 @@ import { TextArea } from './components/ui/TextArea';
 import { WillingnessSelect } from './components/WillingnessSelect';
 import { CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 
+// New office background image
+const BACKGROUND_IMAGE = "https://mynavitechtus.com/wp-content/uploads/2025/06/495168053_1298478595084510_88765-scaled.jpg";
+
 const App: React.FC = () => {
   const [projectId, setProjectId] = useState<string>('');
   const [memberId, setMemberId] = useState<string>('');
@@ -55,49 +58,83 @@ const App: React.FC = () => {
     setIsSuccess(false);
   };
 
-  // Derived state to check if form is valid (All fields optional or required? User said "free style", implying text is important but didn't strict require all. Let's make text fields encouraged but maybe not strictly blocking if they have something, but usually feedback requires at least one input. Let's assume text is required for quality.)
-  // Actually, usually in these frameworks, at least one text field or all should be filled. Let's require at least Keep or Start or Stop, + Sentiment.
   const hasTextFeedback = formData.keepDoing.trim().length > 0 || formData.startDoing.trim().length > 0 || formData.stopDoing.trim().length > 0;
   const isValid = projectId && memberId && hasTextFeedback && formData.sentiment;
 
+  // Render Success Screen
   if (isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-brand-50 to-brand-100">
-        <div className="max-w-md w-full bg-white p-12 rounded-2xl shadow-lg border border-brand-100 text-center fade-enter-active">
-          <div className="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle2 size={32} strokeWidth={2.5} />
+      <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden font-sans">
+        {/* Background Image Layer */}
+        <div className="fixed inset-0 z-0">
+           <img src={BACKGROUND_IMAGE} alt="Office Background" className="w-full h-full object-cover" />
+           {/* Heavy overlay to ensure text readability and maintain brand color */}
+           <div className="absolute inset-0 bg-[#D9F0F7]/90 backdrop-blur-[4px]"></div>
+        </div>
+
+        <div className="relative z-10 max-w-md w-full bg-white/70 backdrop-blur-xl p-12 rounded-[2rem] shadow-[0_8px_32px_rgba(31,38,135,0.07)] border border-white/80 text-center fade-enter-active flex flex-col items-center">
+          <div className="bg-gradient-to-tr from-[#0ea5e9] to-[#38bdf8] p-6 rounded-2xl shadow-lg shadow-brand-500/20 mb-8 transform -rotate-2">
+            <img 
+              src="https://mynavitechtus.com/wp-content/uploads/2023/03/MYNAVI_ENLOGOMYNAVI_VIETNAMTECHTUS_YOKO_WHITE.png" 
+              alt="Mynavi TechTus"
+              className="h-8 w-auto object-contain" 
+            />
           </div>
-          <h2 className="text-2xl font-bold text-brand-900 mb-3">Đánh giá thành công</h2>
-          <p className="text-brand-700/70 mb-8 leading-relaxed">
-            Cảm ơn bạn đã dành thời gian. Những chia sẻ thẳng thắn của bạn sẽ giúp đồng đội phát triển tốt hơn mỗi ngày.
+          <div className="w-20 h-20 bg-[#f0fdf4] text-emerald-500 rounded-full flex items-center justify-center mb-6 shadow-sm border border-emerald-100">
+            <CheckCircle2 size={40} strokeWidth={2.5} />
+          </div>
+          <h2 className="text-3xl font-bold text-[#0c4a6e] mb-3 tracking-tight">Đánh giá thành công</h2>
+          <p className="text-[#075985]/80 mb-10 leading-relaxed font-medium text-lg">
+            Cảm ơn bạn đã dành thời gian. <br/>Những chia sẻ của bạn rất quý giá!
           </p>
           <button 
             onClick={handleReset}
-            className="w-full py-3 px-6 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium transition-colors shadow-md shadow-brand-200"
+            className="w-full py-4 px-6 bg-[#0ea5e9] hover:bg-[#0284c7] text-white rounded-xl font-bold text-lg transition-all shadow-xl shadow-brand-500/20 hover:shadow-brand-500/40 transform hover:-translate-y-1"
           >
-            Review thành viên khác
+            Review người khác
           </button>
         </div>
       </div>
     );
   }
 
+  // Render Main Form
   return (
-    <div className="min-h-screen bg-gradient-to-b from-brand-50 via-brand-50 to-brand-100 py-12 px-4 sm:px-6">
-      <main className="max-w-3xl mx-auto">
+    <div className="min-h-screen relative font-sans text-[#0c4a6e] selection:bg-[#bae6fd]">
+      
+      {/* Background Image Layer */}
+      <div className="fixed inset-0 z-0">
+        <img src={BACKGROUND_IMAGE} alt="Office Background" className="w-full h-full object-cover" />
+        {/* Overlay - Pastel Blue Tint */}
+        <div className="absolute inset-0 bg-[#D9F0F7]/85 backdrop-blur-[3px]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent"></div>
+      </div>
+
+      <main className="relative z-10 max-w-4xl mx-auto py-12 px-4 sm:px-6">
         {/* Header */}
-        <header className="mb-10 text-center">
-          <div className="inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-brand-100 mb-4">
-             <div className="w-8 h-8 bg-brand-50 text-brand-600 rounded-lg flex items-center justify-center mr-3">
-               <Sparkles size={16} />
-             </div>
-             <span className="text-sm font-semibold text-brand-800 tracking-tight">Internal Peer Review</span>
+        <header className="mb-12 text-center flex flex-col items-center">
+          {/* Logo container */}
+          <div className="mb-10 relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-[#7dd3fc] to-[#38bdf8] rounded-full blur opacity-40 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
+            <div className="relative bg-[#0ea5e9] px-8 py-4 rounded-full shadow-2xl shadow-brand-500/20 ring-4 ring-white/30 flex items-center justify-center">
+              <img 
+                src="https://mynavitechtus.com/wp-content/uploads/2023/03/MYNAVI_ENLOGOMYNAVI_VIETNAMTECHTUS_YOKO_WHITE.png" 
+                alt="Mynavi TechTus"
+                className="h-8 sm:h-10 w-auto object-contain filter drop-shadow-sm" 
+              />
+            </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-brand-900 mb-3 tracking-tight">
+          
+          <div className="inline-flex items-center justify-center px-4 py-1.5 bg-white/60 backdrop-blur-md rounded-full shadow-sm border border-white/60 mb-6">
+             <Sparkles size={14} className="text-[#0ea5e9] mr-2" fill="currentColor" />
+             <span className="text-xs font-bold text-[#075985] tracking-wider uppercase">Internal Peer Review</span>
+          </div>
+          
+          <h1 className="text-4xl sm:text-5xl font-black text-[#0c4a6e] mb-4 tracking-tight drop-shadow-sm">
             Đánh giá đồng đội
           </h1>
-          <p className="text-lg text-brand-700/80 font-light max-w-lg mx-auto">
-            Chia sẻ chân thành, cởi mở để cùng nhau tiến bộ.
+          <p className="text-xl text-[#0369a1]/80 font-medium max-w-2xl mx-auto drop-shadow-sm">
+            Góp ý chân thành giúp chúng ta đi xa hơn cùng nhau.
           </p>
         </header>
 
@@ -113,34 +150,36 @@ const App: React.FC = () => {
 
         {/* Form Content */}
         {projectId && memberId && (
-          <form onSubmit={handleSubmit} className="bg-white p-8 sm:p-10 rounded-2xl shadow-md shadow-brand-100/50 border border-brand-100 fade-enter-active">
-            
-            <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="bg-white/60 backdrop-blur-2xl p-8 sm:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80 fade-enter-active relative overflow-hidden">
+            {/* Decoration blob */}
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-[#38bdf8]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div className="space-y-8 relative z-10">
               <TextArea
                 label="Keep Doing (Tiếp tục phát huy)"
-                placeholder="Điều gì người này đang làm tốt và nên duy trì? Ví dụ: Tinh thần trách nhiệm, code clean, hỗ trợ team..."
+                placeholder="Điều gì người này đang làm tốt? (Ví dụ: Kỹ năng giải quyết vấn đề, tinh thần teamwork...)"
                 value={formData.keepDoing}
                 onChange={(e) => setFormData({...formData, keepDoing: e.target.value})}
-                rows={4}
+                rows={3}
               />
 
               <TextArea
                 label="Start Doing (Nên bắt đầu làm)"
-                placeholder="Điều gì người này chưa làm nhưng nếu làm sẽ tốt hơn? Ví dụ: Chủ động đặt câu hỏi, document kỹ hơn..."
+                placeholder="Điều gì sẽ giúp họ tốt hơn? (Ví dụ: Chủ động hơn trong meeting, chia sẻ kiến thức...)"
                 value={formData.startDoing}
                 onChange={(e) => setFormData({...formData, startDoing: e.target.value})}
-                rows={4}
+                rows={3}
               />
 
               <TextArea
-                label="Stop Doing (Cần thay đổi / Dừng lại)"
-                placeholder="Điều gì đang ảnh hưởng không tốt đến công việc chung và nên dừng lại?"
+                label="Stop Doing (Cần thay đổi)"
+                placeholder="Điều gì đang gây trở ngại cho công việc chung?"
                 value={formData.stopDoing}
                 onChange={(e) => setFormData({...formData, stopDoing: e.target.value})}
-                rows={4}
+                rows={3}
               />
 
-              <div className="border-t border-brand-100 my-8"></div>
+              <div className="h-px bg-gradient-to-r from-transparent via-[#bae6fd] to-transparent my-10"></div>
 
               <WillingnessSelect 
                 value={formData.sentiment} 
@@ -149,31 +188,36 @@ const App: React.FC = () => {
             </div>
 
             {/* Submit Action */}
-            <div className="mt-12 flex justify-end flex-col sm:flex-row items-center gap-4">
+            <div className="mt-14 flex flex-col items-center">
               {!isValid && (
-                <span className="text-sm text-brand-400 order-2 sm:order-1">
-                  * Vui lòng điền ít nhất một nhận xét và chọn cảm nhận chung.
-                </span>
+                <div className="mb-4 text-center animate-pulse">
+                  <span className="text-sm font-semibold text-[#0ea5e9] bg-white/60 px-4 py-2 rounded-full border border-white">
+                    Vui lòng hoàn thành ít nhất một mục nhận xét & chọn cảm nhận
+                  </span>
+                </div>
               )}
               <button
                 type="submit"
                 disabled={!isValid || isSubmitting}
                 className={`
-                  flex items-center justify-center py-4 px-8 rounded-xl font-semibold text-lg transition-all duration-200 min-w-[200px] order-1 sm:order-2 w-full sm:w-auto
+                  relative overflow-hidden group w-full sm:w-2/3 py-5 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg
                   ${!isValid 
-                    ? 'bg-brand-50 text-brand-300 cursor-not-allowed border border-brand-100' 
-                    : 'bg-brand-600 text-white hover:bg-brand-500 shadow-lg shadow-brand-500/20 transform hover:-translate-y-0.5'
+                    ? 'bg-slate-100 text-slate-400 cursor-not-allowed shadow-none' 
+                    : 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white hover:shadow-2xl hover:shadow-[#0ea5e9]/30 hover:-translate-y-1'
                   }
                 `}
               >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="animate-spin mr-2" size={20} />
-                    Đang gửi...
-                  </>
-                ) : (
-                  'Gửi đánh giá'
-                )}
+                <span className="relative z-10 flex items-center justify-center">
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="animate-spin mr-3" size={24} />
+                      Đang gửi đánh giá...
+                    </>
+                  ) : (
+                    'Gửi đánh giá'
+                  )}
+                </span>
+                {isValid && <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-700 ease-out -skew-x-12 origin-left"></div>}
               </button>
             </div>
           </form>
@@ -181,16 +225,18 @@ const App: React.FC = () => {
 
         {/* Empty State / Prompt */}
         {(!projectId || !memberId) && (
-          <div className="text-center py-12 px-4 opacity-70">
-            <p className="text-brand-400 font-medium">Vui lòng chọn Dự án và Thành viên để bắt đầu.</p>
+          <div className="text-center py-16 px-4">
+             <p className="text-[#0369a1]/70 font-medium bg-white/50 backdrop-blur-md inline-block px-8 py-4 rounded-2xl border border-white/50 shadow-sm">
+               👋 Chọn dự án và thành viên để bắt đầu review nhé
+             </p>
           </div>
         )}
       </main>
       
-      {/* Footer / Trust signal */}
-      <footer className="mt-12 text-center pb-8">
-        <p className="text-xs text-brand-300">
-          Thông tin đánh giá được bảo mật và chỉ chia sẻ với quản lý trực tiếp.
+      {/* Footer */}
+      <footer className="relative z-10 mt-16 text-center pb-8">
+        <p className="text-xs font-semibold text-[#075985]/60 uppercase tracking-widest bg-white/30 backdrop-blur-sm inline-block px-4 py-1 rounded-full">
+          Secure & Anonymous Feedback System
         </p>
       </footer>
     </div>
